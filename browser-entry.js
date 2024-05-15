@@ -7,9 +7,14 @@
  * Shim process.stdout.
  */
 
-// process.stdout = require('browser-stdout')({label : false});
 process.stdout = {
   write : global.print
+};
+
+var setTimeout = global.setTimeout = (fn, ..._args) => fn();
+global.clearTimeout = (..._args) => {};
+global.console = {
+  log : (...args) => print(...args)
 };
 
 var Mocha = require('./lib/mocha');
@@ -27,10 +32,6 @@ var mocha = new Mocha({reporter : 'spec'});
  */
 
 var Date = global.Date;
-var setTimeout = global.setTimeout;
-var setInterval = global.setInterval;
-var clearTimeout = global.clearTimeout;
-var clearInterval = global.clearInterval;
 
 var uncaughtExceptionHandlers = [];
 
